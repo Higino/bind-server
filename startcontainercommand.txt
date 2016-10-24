@@ -1,0 +1,1 @@
+docker run --name bind -d --restart=always  --publish 53:53/tcp --publish 53:53/udp --publish 10000:10000/tcp  --volume /Users/higinosilva/Documents/Docker/bind9:/data  --env ROOT_PASSWORD=P3nf01d sameersbn/bind:latest
