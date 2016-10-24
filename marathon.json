@@ -5,10 +5,10 @@
   "args": null,
   "user": null,
   "env": {
-    "PASS": "adminpass",
-    "NET": "172.17.0.0;192.168.0.0;10.1.2.0;192.168.65.60;p1.dcos;172.28.23.206"
+    "PASS": "P3nf01d",
+    "NET": "172.17.0.0;192.168.0.0;10.1.2.0;192.168.65.60"
   },
-  "instances": 0,
+  "instances": 1,
   "cpus": 0.2,
   "mem": 256,
   "disk": 0,
@@ -23,37 +23,52 @@
   "container": {
     "docker": {
       "image": "ginolocoop/dns-server:latest",
-      "forcePullImage": true,
-      "privileged": true,
+      "forcePullImage": false,
+      "privileged": false,
       "network": "HOST"
     },
     "type": "DOCKER",
     "volumes": [
       {
         "containerPath": "/etc/bind",
-        "hostPath": "/vagrant/bind/bind",
+        "hostPath": "/vagrant/bind_config/bind",
         "mode": "RW"
       },
       {
         "containerPath": "/etc/webmin",
-        "hostPath": "/vagrant/bind/webmin",
+        "hostPath": "/vagrant/bind_config/webmin",
         "mode": "RW"
       },
       {
-        "containerPath": "/var/lib/bin",
-        "hostPath": "/vagrant/bind/zones",
+        "containerPath": "/var/lib/bind",
+        "hostPath": "/vagrant/bind_config/zones",
         "mode": "RW"
       }
     ]
   },
-  "healthChecks": null,
+  "healthChecks": [
+    {
+      "protocol": "HTTP",
+      "path": "/",
+      "gracePeriodSeconds": 300,
+      "intervalSeconds": 60,
+      "timeoutSeconds": 10,
+      "maxConsecutiveFailures": 1,
+      "port": 10000,
+      "ignoreHttp1xx": false
+    }
+  ],
   "readinessChecks": null,
   "dependencies": null,
   "upgradeStrategy": {
     "minimumHealthCapacity": 1,
     "maximumOverCapacity": 1
   },
-  "labels": null,
+  "labels": {
+    "role": "dns",
+    "category": "secundary",
+    "location": "lisbon"
+  },
   "acceptedResourceRoles": [
     "slave_public"
   ],
